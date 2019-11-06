@@ -92,7 +92,8 @@ const ScrollableTabBar = createReactClass({
     let newScrollX = tabOffset + absolutePageOffset;
 
     // center tab and smooth tab change (for when tabWidth changes a lot between two tabs)
-    newScrollX -= (containerWidth - (1 - pageOffset) * tabWidth - pageOffset * nextTabWidth) / 2;
+    // Changed for Phoenix
+    //newScrollX -= (containerWidth - (1 - pageOffset) * tabWidth - pageOffset * nextTabWidth) / 2;
     newScrollX = newScrollX >= 0 ? newScrollX : 0;
 
     if (Platform.OS === 'android') {
