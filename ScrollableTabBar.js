@@ -1,3 +1,5 @@
+import LinearGradient from 'react-native-linear-gradient';
+
 const React = require('react');
 const { ViewPropTypes } = ReactNative = require('react-native');
 const PropTypes = require('prop-types');
@@ -126,24 +128,41 @@ const ScrollableTabBar = createReactClass({
   },
 
   renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
+    const { activeTextColor, inactiveTextColor, textStyle } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
+    // Added for Phoenix
+    const gradient = isTabActive ? null :
+      <LinearGradient
+        useAngle
+        angle={90}
+        colors={["#FFFFFF00", "#FFFFFF"]}
+        locations={[0, 0.6]}
+        style={{
+          position: 'absolute',
+          right: 0,
+          width: 109,
+          height: 147
+        }}
+      />;
 
-    return <Button
-      key={`${name}_${page}`}
-      accessible={true}
-      accessibilityLabel={name}
-      accessibilityTraits='button'
-      onPress={() => onPressHandler(page)}
-      onLayout={onLayoutHandler}
-    >
-      <View style={[styles.tab, this.props.tabStyle, ]}>
-        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-          {name}
-        </Text>
-      </View>
-    </Button>;
+    return (
+      <Button
+        key={`${name}_${page}`}
+        accessible={true}
+        accessibilityLabel={name}
+        accessibilityTraits="button"
+        onPress={() => onPressHandler(page)}
+        onLayout={onLayoutHandler}
+      >
+        <View style={[styles.tab, this.props.tabStyle]}>
+          <Text style={[{ color: textColor, fontWeight }, textStyle]}>
+            {name}
+          </Text>
+          {gradient}
+        </View>
+      </Button>
+    );
   },
 
   measureTab(page, event) {
