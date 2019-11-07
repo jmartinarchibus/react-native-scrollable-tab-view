@@ -84,18 +84,12 @@ const ScrollableTabBar = createReactClass({
       this._containerMeasurements;
   },
 
+  // Changed for Phoenix
   updateTabPanel(position, pageOffset) {
-    const containerWidth = this._containerMeasurements.width;
     const tabWidth = this._tabsMeasurements[position].width;
-    const nextTabMeasurements = this._tabsMeasurements[position + 1];
-    const nextTabWidth = nextTabMeasurements && nextTabMeasurements.width || 0;
-    const tabOffset = this._tabsMeasurements[position].left;
+    const tabOffset = position * tabWidth;
     const absolutePageOffset = pageOffset * tabWidth;
     let newScrollX = tabOffset + absolutePageOffset;
-
-    // center tab and smooth tab change (for when tabWidth changes a lot between two tabs)
-    // Changed for Phoenix
-    //newScrollX -= (containerWidth - (1 - pageOffset) * tabWidth - pageOffset * nextTabWidth) / 2;
     newScrollX = newScrollX >= 0 ? newScrollX : 0;
 
     if (Platform.OS === 'android') {
@@ -105,7 +99,6 @@ const ScrollableTabBar = createReactClass({
       newScrollX = newScrollX > rightBoundScroll ? rightBoundScroll : newScrollX;
       this._scrollView.scrollTo({x: newScrollX, y: 0, animated: false, });
     }
-
   },
 
   updateTabUnderline(position, pageOffset, tabCount) {
