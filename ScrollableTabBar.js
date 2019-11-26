@@ -87,17 +87,20 @@ const ScrollableTabBar = createReactClass({
   // Changed for Phoenix
   updateTabPanel(position, pageOffset) {
     const tabWidth = this._tabsMeasurements[position].width;
-    const tabOffset = position * tabWidth;
+    const tabOffset = this._tabsMeasurements[position].left;
     const absolutePageOffset = pageOffset * tabWidth;
     let newScrollX = tabOffset + absolutePageOffset;
     newScrollX = newScrollX >= 0 ? newScrollX : 0;
 
     if (Platform.OS === 'android') {
-      this._scrollView.scrollTo({x: newScrollX, y: 0, animated: false, });
+      this._scrollView.scrollTo({ x: newScrollX, y: 0, animated: false });
     } else {
-      const rightBoundScroll = this._tabContainerMeasurements.width - (this._containerMeasurements.width);
-      newScrollX = newScrollX > rightBoundScroll ? rightBoundScroll : newScrollX;
-      this._scrollView.scrollTo({x: newScrollX, y: 0, animated: false, });
+      const rightBoundScroll =
+        this._tabContainerMeasurements.width -
+        this._containerMeasurements.width;
+      newScrollX =
+        newScrollX > rightBoundScroll ? rightBoundScroll : newScrollX;
+      this._scrollView.scrollTo({ x: newScrollX, y: 0, animated: false });
     }
   },
 
@@ -124,21 +127,7 @@ const ScrollableTabBar = createReactClass({
     const { activeTextColor, inactiveTextColor, textStyle } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
-    // Added for Phoenix
-    const gradient = isTabActive ? null :
-      <LinearGradient
-        useAngle
-        angle={90}
-        colors={["#FFFFFF00", "#FFFFFF"]}
-        locations={[0, 0.6]}
-        style={{
-          position: 'absolute',
-          right: 0,
-          width: 109,
-          height: 147
-        }}
-      />;
-
+    
     return (
       <Button
         key={`${name}_${page}`}
@@ -152,7 +141,6 @@ const ScrollableTabBar = createReactClass({
           <Text style={[{ color: textColor, fontWeight }, textStyle]}>
             {name}
           </Text>
-          {gradient}
         </View>
       </Button>
     );
@@ -181,6 +169,19 @@ const ScrollableTabBar = createReactClass({
       style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}
       onLayout={this.onContainerLayout}
     >
+      <LinearGradient
+        useAngle
+        angle={90}
+        colors={['#FFFFFF00', '#FFFFFF']}
+        locations={[0, 0.6]}
+        style={{
+          position: 'absolute',
+          right: 0,
+          width: 109,
+          height: 50,
+          zIndex: 10,
+        }}
+      />
       <ScrollView
         ref={(scrollView) => { this._scrollView = scrollView; }}
         horizontal={true}
