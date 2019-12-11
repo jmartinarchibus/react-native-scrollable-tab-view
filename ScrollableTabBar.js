@@ -216,12 +216,13 @@ const ScrollableTabBar = createReactClass({
 
   onTabContainerLayout(e) {
     this._tabContainerMeasurements = e.nativeEvent.layout;
-    let width = this._tabContainerMeasurements.width;
+    /*let width = this._tabContainerMeasurements.width;
     if (width < WINDOW_WIDTH) {
       width = WINDOW_WIDTH;
     }
     this.setState({ _containerWidth: width, });
-    this.updateView({value: this.props.scrollValue.__getValue(), });
+    */
+    this.updateView({ value: this.props.scrollValue.__getValue(), });
   },
 
   onContainerLayout(e) {
